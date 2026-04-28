@@ -1,0 +1,44 @@
+﻿<Window x:Class="PrecisionAssetManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="精密零件資產管理系統" Height="550" Width="900" Background="#F8FAFC">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="精密零件資產管理終端" FontSize="24" FontWeight="Bold" Foreground="#0F172A"/>
+            <TextBlock Text="*採用工作量法 (Units-of-production method) 進行動態折舊核算" Foreground="#64748B" FontSize="12" Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <DataGrid Name="dgAssets" Grid.Row="1" AutoGenerateColumns="False" 
+                  CanUserAddRows="False" IsReadOnly="False" Background="White" BorderBrush="#E2E8F0"
+                  RowHeight="40" FontSize="14" AlternatingRowBackground="#F1F5F9">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="零件型號" Binding="{Binding Model}" Width="1.5*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="原始成本" Binding="{Binding Cost, StringFormat={}{0:C0}}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="累積里程 (km)" Binding="{Binding CurrentMileage, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                <DataGridTextColumn Header="額定壽命 (km)" Binding="{Binding MaxLife}" Width="*" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="剩餘價值 (Book Value)" Width="1.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding BookValue, StringFormat={}{0:C0}}" FontWeight="Bold" Foreground="#059669"/>
+                                <TextBlock Text=" TWD" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Bottom"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="健康度" Binding="{Binding HealthStatus}" Width="*" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="匯出財務報表" Width="120" Height="35" Background="#1E293B" Foreground="White" Margin="10,0" Click="btnExport_Click"/>
+            <Button Content="重置模擬數據" Width="120" Height="35" Background="#3B82F6" Foreground="White" Click="btnRefresh_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
